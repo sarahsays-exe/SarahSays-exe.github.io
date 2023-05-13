@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Airport Estimations</title>
     <style>
@@ -8,20 +7,17 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-
         label {
             font-weight: bold;
             display: block;
             margin-top: 10px;
         }
-
         input[type="text"] {
             width: 200px;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
         button {
             padding: 10px 20px;
             background-color: #4CAF50;
@@ -30,11 +26,9 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #45a049;
         }
-
         #result {
             margin-top: 20px;
             font-weight: bold;
@@ -42,13 +36,11 @@
     </style>
     <script>
         var convertTo12HourCalled = false;
-
         function formatTime(date) {
             var hours = date.getHours().toString().padStart(2, '0');
             var minutes = date.getMinutes().toString().padStart(2, '0');
             return hours + ':' + minutes;
         }
-
         function convertTo12Hour() {
             var input = document.getElementById('hourInput').value;
             var hour = parseInt(input);
@@ -60,7 +52,6 @@
             }
             convertTo12HourCalled = true;
         }
-
         function calculateTimes() {
             var departureTime = document.getElementById('departureTime').value;
             var securityWait = parseInt(document.getElementById('securityWait').value);
@@ -74,18 +65,14 @@
             var commuteToAirportTime = new Date(securityTime - commuteTime * 60000);
             var leaveHouseTime = new Date(commuteToAirportTime - 15 * 60000);
             var dressedAndPackedTime = new Date(leaveHouseTime - 60 * 60000);
-
             var resultElement = document.getElementById('result');
             resultElement.innerHTML = ''; // Clear previous results
-            
-
             var displayResult = function (label, time) {
                 var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 var paragraph = document.createElement('p');
                 paragraph.innerText = label + ': ' + formattedTime;
                 resultElement.appendChild(paragraph);
             };
-
             displayResult('Depart', departTime);
             displayResult('Boarding', boardingTime);
             displayResult('Walk to Gate', walkToGateTime);
@@ -109,14 +96,11 @@
                 };
             }
         }
-
     </script>
     </body>
 </head>
-
 <body>
     <h1>Airport Estimations</h1>
-
     <!-- 24-hour to 12-hour Converter section -->
     <div>
         <h2>24-hour to 12-hour Converter</h2>
@@ -125,7 +109,6 @@
         <button onclick="convertTo12Hour()">Convert</button>
         <p id="convertedTime"></p>
     </div>
-
     <div>
         <h2>Airport Estimation Calculator</h2>
         <form>
@@ -143,5 +126,4 @@
         <div id="convertedResult"></div>
     </div>
 </body>
-
 </html>
