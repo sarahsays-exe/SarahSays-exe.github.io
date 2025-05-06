@@ -92,7 +92,7 @@
             }
 
             // Set flag to indicate that 'convertTo12Hour' function has been called
-            convertTo12HourCalled = true; 
+            convertTo12HourCalled = true;
         }
 
         // Function to calculate various times based on user input
@@ -104,12 +104,25 @@
             // Get commute time value from 'commuteTime' element
             var commuteTime = parseInt(document.getElementById('commuteTime').value);
 
+            // Check the flight type (International/Domestic) from radio buttons
+            var flightType = document.querySelector('input[name="flightType"]:checked').value;
+            var additionalTimeForFlight = flightType === 'international' ? 30 : 0; 
+            // Add 30 minutes for international flights
+
+            // Check the meal option (Yes/No) from radio buttons
+            var mealOption = document.querySelector('input[name="mealOption"]:checked').value;
+            var additionalTimeForMeal = mealOption === 'yesMeal' ? 30 : 0; 
+            // Add 30 minutes if eating a meal
+
+            // Total additional time
+            var totalAdditionalTime = additionalTimeForFlight + additionalTimeForMeal;
+
             // Create Date objects for each calculated time
             var departTime = new Date('01/01/2000 ' + departureTime);
             var boardingTime = new Date(departTime - 30 * 60000);
             var walkToGateTime = new Date(boardingTime - 10 * 60000);
             var finishTSATime = new Date(walkToGateTime - 10 * 60000);
-            var securityTime = new Date(finishTSATime - securityWait * 60000);
+            var securityTime = new Date(finishTSATime - (securityWait + totalAdditionalTime) * 60000);
             var commuteToAirportTime = new Date(securityTime - commuteTime * 60000);
             var leaveHouseTime = new Date(commuteToAirportTime - 15 * 60000);
             var dressedAndPackedTime = new Date(leaveHouseTime - 60 * 60000);
@@ -122,7 +135,7 @@
                 // Format time as HH:MM
                 var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 var paragraph = document.createElement('p');
-                paragraph.innerHTML = label + ': ' + formattedTime + 
+                paragraph.innerHTML = label + ': ' + formattedTime +
                     '<span class="time-adjust-buttons">' +
                     '<button onclick="adjustTime(\'' + id + '\', -1)">-</button>' +
                     '<button onclick="adjustTime(\'' + id + '\', 1)">+</button>' +
@@ -163,7 +176,7 @@
             var time = new Date('01/01/2000 ' + timeString);
             time.setMinutes(time.getMinutes() + minutes);
             var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            element.innerHTML = element.innerHTML.split(': ')[0] + ': ' + formattedTime + 
+            element.innerHTML = element.innerHTML.split(': ')[0] + ': ' + formattedTime +
                 '<span class="time-adjust-buttons">' +
                 '<button onclick="adjustTime(\'' + id + '\', -1)">-</button>' +
                 '<button onclick="adjustTime(\'' + id + '\', 1)">+</button>' +
@@ -171,7 +184,7 @@
         }
 
         // Stretch goals: 
-        // "International/Domestic" toggle (adds/subtracts 20 minutes)
+        // "International/Domestic" toggle (adds/subtracts 30 minutes)
         // Eat a meal Yes/No toggle (adds/subtracts 30 minutes)
         // Grab map of airport terminals
         // Google Maps Traffic API
@@ -179,8 +192,6 @@
         // Airlines realtime data API
 
     </script>
-
-    </body>
 </head>
 
 <body>
@@ -194,7 +205,7 @@
         <p id="convertedTime"></p>
     </div>
     <div>
-    <!-- Airport Estimation Calculator section -->
+        <!-- Airport Estimation Calculator section -->
         <h2>Airport Estimation Calculator</h2>
         <form>
             <label for="departureTime">Departure Time (00:00)</label>
@@ -205,6 +216,22 @@
 
             <label for="commuteTime">Commute to Airport (in minutes)</label>
             <input type="text" id="commuteTime">
+
+            <!-- International/Domestic toggle -->
+            <label>
+                <input type="radio" name="flightType" value="domestic" checked> Domestic
+            </label>
+            <label>
+                <input type="radio" name="flightType" value="international"> International
+            </label>
+
+            <!-- Eat a meal Yes/No toggle -->
+            <label>
+                <input type="radio" name="mealOption" value="noMeal" checked> No Meal
+            </label>
+            <label>
+                <input type="radio" name="mealOption" value="yesMeal"> Eat a Meal
+            </label>
         </form>
         <button onclick="calculateTimes()">Calculate</button>
         <div id="result"></div>
