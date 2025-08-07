@@ -20,13 +20,15 @@
 
 <body>
     <main>
-        <article class="paper">
+        <article class="paper" itemscope itemtype="https://schema.org/Person">
             <header>
-                <h1>Sarah Sexton</h1>
+                <h1 itemprop="name">Sarah Sexton</h1>
                 <p class="contact">
-                    Seattle, WA | (425) 681-8977 |
-                    <a href="mailto:sarah.txt@outlook.com">sarah.txt@outlook.com</a> |
-                    <a href="https://linkedin.com/in/SarahJeanneSexton" target="_blank" rel="noopener">LinkedIn</a>
+                    <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">Seattle</span>, <span itemprop="addressRegion">WA</span>
+                    </span> | <span itemprop="telephone">(425) 681-8977</span> |
+                    <a href="mailto:sarah.txt@outlook.com" itemprop="email">sarah.txt@outlook.com</a> |
+                    <a href="https://linkedin.com/in/SarahJeanneSexton" target="_blank" rel="noopener" itemprop="sameAs">LinkedIn</a>
                 </p>
             </header>
             <section class="section">
@@ -41,7 +43,8 @@
             <section class="section">
                 <h2>Areas of Expertise</h2>
                 <ul class="skills" role="list">
-                    <li>Artificial Intelligence</li><li>Cloud</li><li>Engineering Fundamentals</li><li>Communication</li><li>Customer Relations</li><li>Accessibility</li>
+                    <li>Artificial Intelligence</li><li>Cloud</li><li>Engineering Fundamentals</li><br>
+                    <li>Communication</li><li>Customer Relations</li><li>Accessibility</li>
                 </ul>
             </section>
             <section class="section">
@@ -54,9 +57,9 @@
             </section>
             <section class="section">
                 <h2>Experience</h2>
-                <div class="exp-job">
-                    <h3 class="exp-title">Software Engineer II</h3>, <span class="exp-company">Microsoft, Redmond, WA</span>
-                    <span class="exp-dates">July 2018 – July 2025</span>
+                <div class="exp-job" itemscope itemtype="https://schema.org/JobPosting">
+                    <h3 class="exp-title" itemprop="title">Software Engineer II</h3>, <span class="exp-company" itemprop="hiringOrganization">Microsoft, Redmond, WA</span>
+                    <span class="exp-dates" itemprop="datePosted">July 2018 – July 2025</span>
                     <ul class="exp-details" role="list">
                         <li>Spearheaded bleeding-edge technologies as they emerged: GenAI, ChatGPT, LLMs, RNNs, and more.</li>
                         <li>5+ years’ experience training data pipelines, fine-tuning models, and working across MLOps systems.</li>
@@ -66,9 +69,9 @@
                         <li>Streamlined unit testing processes by automating pull request gate build pipelines to report code coverage.</li>
                     </ul>
                 </div>
-                <div class="exp-job">
-                    <h3 class="exp-title">Technical Evangelist</h3>, <span class="exp-company">Microsoft, Chicago, IL</span>
-                    <span class="exp-dates">July 2014 – July 2018</span>
+                <div class="exp-job" itemscope itemtype="https://schema.org/JobPosting">
+                    <h3 class="exp-title" itemprop="title">Technical Evangelist</h3>, <span class="exp-company" itemprop="hiringOrganization">Microsoft, Chicago, IL</span>
+                    <span class="exp-dates" itemprop="datePosted">July 2014 – July 2018</span>
                     <ul class="exp-details" role="list">
                         <li>Co-founded a non-profit organization called The Voxel Collective for Gender Diversity in Game Development; organized Game Jams and Hackathons for over 100 diverse meetup members.</li>
                         <li>Ran over 70 Azure and gaming evangelism events across Microsoft Developer Experience (DX) field.</li>
