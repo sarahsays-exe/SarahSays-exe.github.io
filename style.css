@@ -97,6 +97,9 @@ h1 {
 .exp-company {
     color: #555;
 }
+.second-page .exp-job {
+    margin-bottom: 2em;
+}
 /* Responsive right-aligned job dates */
 .exp-job {
     display: flex;
