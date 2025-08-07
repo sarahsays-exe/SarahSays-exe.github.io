@@ -12,9 +12,9 @@ ul {
         display: block;
         margin-bottom: 8px;
     }
-    .links-list {
-        text-align: left;
-    }
+.links-list {
+    text-align: center;
+}
 }
 /* Style for summary list in Full Stack Engineer section */
 .summary-list {
