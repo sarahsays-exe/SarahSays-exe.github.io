@@ -1,3 +1,13 @@
+/* Style for summary list in Full Stack Engineer section */
+.summary-list {
+    margin: 0 0 1.5em 0;
+    padding-left: 1.2em;
+    font-size: 0.9375em;
+    color: #222;
+}
+.summary-list li {
+    margin-bottom: 0.5em;
+}
 body {
     background: #ececec;
     min-height: 100vh;
@@ -69,6 +79,7 @@ h1 {
     gap: 8px 24px;
     font-size: 1em;
     color: #222;
+    justify-content: space-between;
 }
 .skills span, .awards span {
     background: #f5f5f5;
