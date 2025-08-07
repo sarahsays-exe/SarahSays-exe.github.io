@@ -1,6 +1,6 @@
 This repository contains the source code for my personal resume and portfolio, hosted on GitHub Pages at:
 
-**https://sarahsexton.github.io/**
+**https://sarahsays.github.io/**
 
 ### Readme
 
@@ -16,4 +16,4 @@ This site is open source for personal and professional transparency. Feel free t
 
 ---
 
-Contact: [sarah.txt@outlook.com](mailto:sarah.txt@outlook.com) | [LinkedIn](https://linkedin.com/in/SarahJeanneSexton)
+Contact: [sarahsays.exe@gmail.com](mailto:sarahsays.exe@gmail.com) | [LinkedIn](https://linkedin.com/in/SarahSays-exe)
