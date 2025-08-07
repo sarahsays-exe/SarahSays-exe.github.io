@@ -1,252 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Airport Estimations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sarah Sexton | Resume</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <!-- No script needed for static resume -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
-
-        input[type="text"] {
-            width: 200px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        .time-adjust-buttons {
-            margin-left: 10px;
-        }
-
-        .time-adjust-buttons button {
-            padding: 2px 5px;
-            background-color: #ccc;
-            color: black;
-            border: none;
-            border-radius: 2px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .time-adjust-buttons button:hover {
-            background-color: #bbb;
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px; width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
         }
     </style>
-    <script>
-        // Variable to track if the 'convertTo12Hour' function has been called
-        var convertTo12HourCalled = false;
-
-        // Function to format the time as HH:MM
-        function formatTime(date) {
-            // Get hours and pad with leading zero if necessary
-            var hours = date.getHours().toString().padStart(2, '0');
-            // Get minutes and pad with leading zero if necessary
-            var minutes = date.getMinutes().toString().padStart(2, '0');
-            // Return formatted time string
-            return hours + ':' + minutes;
-        }
-
-        // Function to convert time to 12-hour format
-        function convertTo12Hour() {
-            // Get input value from 'hourInput' element
-            var input = document.getElementById('hourInput').value;
-            // Parse input as an integer
-            var hour = parseInt(input);
-
-            // Check if the input is a valid hour (between 1 and 12)
-            if (hour >= 1 && hour <= 12) {
-                // Convert hour to 24-hour format
-                var convertedHour = (hour + 12) % 24;
-                // Update 'convertedTime' element with converted time
-                document.getElementById('convertedTime').innerHTML = 'Converted Time: ' + convertedHour;
-            } else {
-                // Display error message for invalid input
-                document.getElementById('convertedTime').innerHTML = 'Invalid input. Please enter a number between 1 and 12.';
-            }
-
-            // Set flag to indicate that 'convertTo12Hour' function has been called
-            convertTo12HourCalled = true;
-        }
-
-        // Function to calculate various times based on user input
-        function calculateTimes() {
-            // Get departure time value from 'departureTime' element
-            var departureTime = document.getElementById('departureTime').value;
-            // Get security wait time value from 'securityWait' element
-            var securityWait = parseInt(document.getElementById('securityWait').value);
-            // Get commute time value from 'commuteTime' element
-            var commuteTime = parseInt(document.getElementById('commuteTime').value);
-
-            // Check the flight type (International/Domestic) from radio buttons
-            var flightType = document.querySelector('input[name="flightType"]:checked').value;
-            var additionalTimeForFlight = flightType === 'international' ? 30 : 0; 
-            // Add 30 minutes for international flights
-
-            // Check the meal option (Yes/No) from radio buttons
-            var mealOption = document.querySelector('input[name="mealOption"]:checked').value;
-            var additionalTimeForMeal = mealOption === 'yesMeal' ? 30 : 0; 
-            // Add 30 minutes if eating a meal
-
-            // Total additional time
-            var totalAdditionalTime = additionalTimeForFlight + additionalTimeForMeal;
-
-            // Create Date objects for each calculated time
-            var departTime = new Date('01/01/2000 ' + departureTime);
-            var boardingTime = new Date(departTime - 30 * 60000);
-            var walkToGateTime = new Date(boardingTime - 10 * 60000);
-            var finishTSATime = new Date(walkToGateTime - 10 * 60000);
-            var securityTime = new Date(finishTSATime - (securityWait + totalAdditionalTime) * 60000);
-            var commuteToAirportTime = new Date(securityTime - commuteTime * 60000);
-            var leaveHouseTime = new Date(commuteToAirportTime - 15 * 60000);
-            var dressedAndPackedTime = new Date(leaveHouseTime - 60 * 60000);
-
-            var resultElement = document.getElementById('result');
-            resultElement.innerHTML = ''; // Clear previous results
-
-            // Function to display a calculated time with its label
-            var displayResult = function (label, time, id) {
-                // Format time as HH:MM
-                var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                var paragraph = document.createElement('p');
-                paragraph.innerHTML = label + ': ' + formattedTime +
-                    '<span class="time-adjust-buttons">' +
-                    '<button onclick="adjustTime(\'' + id + '\', -1)">-</button>' +
-                    '<button onclick="adjustTime(\'' + id + '\', 1)">+</button>' +
-                    '</span>';
-                paragraph.id = id;
-                resultElement.appendChild(paragraph);
-            };
-
-            // Display calculated times with labels and adjusters
-            displayResult('Depart', departTime, 'departTime');
-            displayResult('Boarding', boardingTime, 'boardingTime');
-            displayResult('Walk to Gate', walkToGateTime, 'walkToGateTime');
-            displayResult('Finish TSA', finishTSATime, 'finishTSATime');
-            displayResult('Security Time', securityTime, 'securityTime');
-            displayResult('Commute to Airport Time', commuteToAirportTime, 'commuteToAirportTime');
-            displayResult('Leave House Time', leaveHouseTime, 'leaveHouseTime');
-            displayResult('Dressed and Packed Time', dressedAndPackedTime, 'dressedAndPackedTime');
-
-            if (convertTo12HourCalled) {
-                // Function to convert times to 12-hour format
-                function meridiemMath() {
-                    var times = resultElement.querySelectorAll('p'); // Get all <p> elements within 'resultElement'
-                    times.forEach(function (time) {
-                        var timeValue = time.innerText;
-                        var hour = parseInt(timeValue.split(':')[1].trim().split(' ')[0]); // Extract hour from the time string
-                        var period = (hour >= 12) ? 'PM' : 'AM'; // Determine if it's AM or PM
-                        var convertedHour = (hour % 12) || 12; // Convert hour to 12-hour format
-                        time.innerText = timeValue.replace(hour, convertedHour + ' ' + period); // Replace hour in the time string with converted hour and period
-                    });
-                    resultElement.removeChild(convertButton); // Remove the 'convertButton' element
-                };
-            }
-        }
-
-        function adjustTime(id, minutes) {
-            var element = document.getElementById(id);
-            var timeString = element.innerText.split(': ')[1].split(' ')[0];
-            var time = new Date('01/01/2000 ' + timeString);
-            time.setMinutes(time.getMinutes() + minutes);
-            var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            element.innerHTML = element.innerHTML.split(': ')[0] + ': ' + formattedTime +
-                '<span class="time-adjust-buttons">' +
-                '<button onclick="adjustTime(\'' + id + '\', -1)">-</button>' +
-                '<button onclick="adjustTime(\'' + id + '\', 1)">+</button>' +
-                '</span>';
-        }
-
-        // Stretch goals: 
-        // Grab map of airport terminals
-        // Google Maps Traffic API
-        // TSA Wait Times API
-        // Airlines realtime data API
-
-    </script>
 </head>
 
 <body>
-    <h1>Airport Estimations</h1>
-    <!-- 24-hour to 12-hour Converter section -->
-    <div>
-        <h2>24-hour to 12-hour Converter</h2>
-        <label for="hourInput">Enter an hour (1-12):</label>
-        <input type="text" id="hourInput">
-        <button onclick="convertTo12Hour()">Convert</button>
-        <p id="convertedTime"></p>
-    </div>
-    <div>
-        <!-- Airport Estimation Calculator section -->
-        <h2>Airport Estimation Calculator</h2>
-        <form>
-            <label for="departureTime">Departure Time (00:00)</label>
-            <input type="text" id="departureTime">
-
-            <label for="securityWait">Security Wait Times (in minutes)</label>
-            <input type="text" id="securityWait">
-
-            <label for="commuteTime">Commute to Airport (in minutes)</label>
-            <input type="text" id="commuteTime">
-
-            <!-- International/Domestic toggle -->
-            <label>
-                <input type="radio" name="flightType" value="domestic" checked> Domestic
-            </label>
-            <label>
-                <input type="radio" name="flightType" value="international"> International
-            </label>
-
-            <!-- Eat a meal Yes/No toggle -->
-            <label>
-                <input type="radio" name="mealOption" value="noMeal" checked> No Meal
-            </label>
-            <label>
-                <input type="radio" name="mealOption" value="yesMeal"> Eat a Meal
-            </label>
-        </form>
-        <button onclick="calculateTimes()">Calculate</button>
-        <div id="result"></div>
-        <div id="convertedResult"></div>
-    </div>
-    <div>
-        <h4><a href="https://www.ifly.com/airports/seattle-tacoma-international-airport/wait-times" target="_blank">Open
-                Security Wait Times</a></h4>
-    </div>
-    <div>
-        <h4><a href="https://maps.google.com/maps?saddr=&daddr=SeaTac+WA" target="_blank">Open Google Maps</a></h4>
-    </div>
-    <div>
-        <iframe referrerpolicy="no-referrer-when-downgrade"
-            src="https://embed.waze.com/iframe?zoom=10&lat=47.44815&lon=-122.30986&pin=1" width="350"
-            height="350"></iframe>
-    </div>
+    <main>
+        <article class="paper">
+            <header>
+                <h1>Sarah Sexton</h1>
+                <p class="contact">
+                    Seattle, WA | (425) 681-8977 |
+                    <a href="mailto:sarah.txt@outlook.com">sarah.txt@outlook.com</a> |
+                    <a href="https://linkedin.com/in/SarahJeanneSexton" target="_blank" rel="noopener">LinkedIn</a>
+                </p>
+            </header>
+            <section class="section">
+                <h2>Full Stack Engineer</h2>
+                <p>
+                    Accomplished Software Engineer of 10+ years at Microsoft with back- and front-end experience.<br>
+                    Professional public speaker, strong technical and communicative skills.<br>
+                    Experienced in evaluating AI technologies: LLMs, orchestration patterns, RAG, and custom ML models.<br>
+                    Excellent organizational and people skills, including tenacious attention to detail and impact through influence.
+                </p>
+            </section>
+            <section class="section">
+                <h2>Areas of Expertise</h2>
+                <ul class="skills" role="list">
+                    <li>Artificial Intelligence</li><li>Cloud</li><li>Engineering Fundamentals</li><li>Communication</li><li>Customer Relations</li><li>Accessibility</li>
+                </ul>
+            </section>
+            <section class="section">
+                <h2>Skills</h2>
+                <ul class="skills" role="list">
+                    <li>Responsible OpenAI</li><li>Azure Cloud Architecture</li><li>DevOps Pipelines</li><li>Customer Relationship Management (CRM)</li>
+                    <li>C#</li><li>Python</li><li>ASP.NET</li><li>React</li><li>Material UI</li><li>JavaScript Object Notation (JSON)</li>
+                    <li>Querying Databases (SQL)</li><li>Large Language Models (LLM)</li><li>Data Science Machine Learning (DSML)</li><li>Retrieve Augment Generate (RAG)</li>
+                </ul>
+            </section>
+            <section class="section">
+                <h2>Experience</h2>
+                <div class="exp-job">
+                    <h3 class="exp-title">Software Engineer II</h3>, <span class="exp-company">Microsoft, Redmond, WA</span>
+                    <span class="exp-dates">July 2018 – July 2025</span>
+                    <ul class="exp-details" role="list">
+                        <li>Spearheaded bleeding-edge technologies as they emerged: GenAI, ChatGPT, LLMs, RNNs, and more.</li>
+                        <li>5+ years’ experience training data pipelines, fine-tuning models, and working across MLOps systems.</li>
+                        <li>Deployed LLMs at scale; architected ML models end-to-end.</li>
+                        <li>Led 22 technical engagements hands-on with top 500 Microsoft Azure commercial & retail customers.</li>
+                        <li>Improved overall customer satisfaction by 34% by accelerating cloud workloads.</li>
+                        <li>Streamlined unit testing processes by automating pull request gate build pipelines to report code coverage.</li>
+                    </ul>
+                </div>
+                <div class="exp-job">
+                    <h3 class="exp-title">Technical Evangelist</h3>, <span class="exp-company">Microsoft, Chicago, IL</span>
+                    <span class="exp-dates">July 2014 – July 2018</span>
+                    <ul class="exp-details" role="list">
+                        <li>Co-founded a non-profit organization called The Voxel Collective for Gender Diversity in Game Development; organized Game Jams and Hackathons for over 100 diverse meetup members.</li>
+                        <li>Ran over 70 Azure and gaming evangelism events across Microsoft Developer Experience (DX) field.</li>
+                        <li>Created and delivered over 20 presentations at conferences from 2014 – 2020, with live technical demos for audiences of hundreds.</li>
+                        <li>Advocated for over 24 professional developers & studios around the world by collecting product feedback and escalating technical blockers with engineering.</li>
+                        <li>Interviewed 12 diverse game developers, sharing thought-provoking stories to inspire the next generation.</li>
+                    </ul>
+                </div>
+            </section>
+            <section class="section">
+                <h2>Education</h2>
+                <p>
+                    <strong>BS - Bachelor of Science – Computer Science</strong><br>
+                    Communications Minor, summa cum laude<br>
+                    Central Washington University - Ellensburg, WA
+                </p>
+            </section>
+            <section class="section">
+                <h2>Certifications & Awards</h2>
+                <ul class="awards" role="list">
+                    <li>Microsoft Certified: Accessibility (2025)</li><li>Privacy (2024)</li><li>Security (2023)</li><li>Azure Fundamentals (2019)</li>
+                    <li>Microsoft Specialist: Implementing Microsoft Azure Infrastructure Solutions (2015)</li>
+                    <li><strong>Microsoft Circle of Excellence</strong> - FY16 Top Subsidiary Award (2015)</li>
+                    <li><strong>Microsoft Diversity and Inclusion Award</strong> - 2015 MS Developer Experience (2015)</li>
+                </ul>
+            </section>
+            <section class="section links">
+                <h2 class="visually-hidden">Links</h2>
+                Open-Source: <a href="https://github.com/SarahSexton" target="_blank" rel="noopener">github.com/SarahSexton</a> |
+                Thought Leadership: <a href="https://shebuildsgames.dev" target="_blank" rel="noopener">shebuildsgames.dev</a> |
+                Tech Blog: <a href="https://aka.ms/sarahsays" target="_blank" rel="noopener">aka.ms/sarahsays</a>
+            </section>
+        </article>
+        <!-- Simulated second page for scrolling effect, hidden from screen readers -->
+        <div class="paper" aria-hidden="true" style="opacity:0.5; pointer-events:none; position:relative; top:-40px;"></div>
+    </main>
 </body>
 
 </html>
